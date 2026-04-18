@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVL Tree &amp; Heap Visualization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Cinzel:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>AVL Tree &amp; Heap Visualization</h1>
+    </header>
+
+    <!-- ── AVL Tree ─────────────────────────────────────────── -->
+    <div class="section-label">AVL Tree</div>
+
+    <div class="control-row">
+      <div class="input-group">
+        <input type="text" id="node-value" placeholder="Value (num or letter)" />
+        <button id="btn-insert">Insert</button>
+        <button id="btn-delete" disabled>Delete</button>
+        <button id="btn-clear">Clear</button>
+      </div>
+    </div>
+
+    <div class="control-row random-row">
+      <span class="row-label">Random:</span>
+      <input type="number" id="avl-random-size" value="10" min="1" max="200" />
+      <select id="avl-random-type">
+        <option value="number">Numbers</option>
+        <option value="letter">Letters</option>
+      </select>
+      <button id="btn-avl-random">Generate</button>
+    </div>
+
+    <div id="avl-selection-label" class="selection-hint">Click a node to select it for deletion</div>
+
+    <div id="log-panel">
+      <strong>Operation Log</strong>
+      <ul id="log-list"></ul>
+    </div>
+
+    <svg id="tree-svg"></svg>
+
+    <!-- ── Binary Heap ──────────────────────────────────────── -->
+    <div class="section-label">Binary Heap</div>
+
+    <div class="control-row">
+      <div class="input-group">
+        <input type="text" id="heap-value" placeholder="Value (num or letter)" />
+        <button id="btn-heap-insert">Insert</button>
+        <button id="btn-heap-extract">Extract Root</button>
+        <button id="btn-heap-delete" disabled>Delete Selected</button>
+        <button id="btn-heap-toggle" class="toggle-btn">Mode: Max-Heap</button>
+        <button id="btn-heap-clear">Clear</button>
+      </div>
+    </div>
+
+    <div class="control-row random-row">
+      <span class="row-label">Random:</span>
+      <input type="number" id="heap-random-size" value="10" min="1" max="200" />
+      <select id="heap-random-type">
+        <option value="number">Numbers</option>
+        <option value="letter">Letters</option>
+      </select>
+      <button id="btn-heap-random">Generate</button>
+    </div>
+
+    <div id="heap-selection-label" class="selection-hint">Click a node to select it for deletion</div>
+
+    <div id="heap-log-panel">
+      <strong>Heap Log</strong>
+      <ul id="heap-log-list"></ul>
+    </div>
+
+    <div id="heap-array-display">
+      <span class="array-label">Array:</span>
+      <span id="heap-array-values"></span>
+    </div>
+
+    <svg id="heap-svg"></svg>
+  </div>
+
+  <script src="random-keys.js"></script>
+  <script src="avl-tree.js"></script>
+  <script src="visualization.js"></script>
+  <script src="heap.js"></script>
+  <script src="heap-visualization.js"></script>
+</body>
+</html>
