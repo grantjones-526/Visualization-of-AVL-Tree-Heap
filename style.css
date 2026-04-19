@@ -22,8 +22,20 @@
 body {
   font-family: 'Cinzel', serif;
   background-color: var(--bg);
+  /* SVG data URL tile containing three bezier wave paths at different depths and opacities.
+     Each path starts and ends at the same y so the tile repeats seamlessly on the x-axis.
+     Animating background-position by exactly one tile width creates a smooth infinite scroll. */
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='130'><path d='M0 32 C80 16 240 48 320 32' stroke='rgba(74,170,216,0.11)' stroke-width='2' fill='none'/><path d='M0 75 C80 65 240 85 320 75' stroke='rgba(255,255,255,0.045)' stroke-width='1.5' fill='none'/><path d='M0 112 C80 105 240 119 320 112' stroke='rgba(74,170,216,0.055)' stroke-width='1' fill='none'/></svg>");
+  background-repeat: repeat;
+  background-size: 320px 130px;
+  animation: ocean-drift 22s linear infinite;
   color: var(--ink);
   min-height: 100vh;
+}
+
+@keyframes ocean-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 320px 0; }
 }
 
 /* ── LAYOUT ───────────────────────────────────────────────── */
@@ -72,13 +84,67 @@ header h1 {
   width: 100%;
   max-width: 900px;
   font-family: 'Pirata One', cursive;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: var(--sand);
-  letter-spacing: 2px;
-  margin-top: 12px;
-  padding-left: 4px;
+  letter-spacing: 5px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
-.section-label::before { content: '~ '; color: var(--ocean); }
+
+/* Decorative lines extending outward from the label text on both sides */
+.section-label::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border) 70%, var(--sand));
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to left, transparent, var(--border) 70%, var(--sand));
+}
+
+/* ── SECTION DIVIDER ──────────────────────────────────────── */
+.section-divider {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  margin: 28px 0 8px;
+}
+
+/* Double-ruled lines flanking the anchor glyph, fading to transparent at the outer edges */
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 5px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-divider::before {
+  background: linear-gradient(to right, transparent, rgba(122,92,42,0.25));
+  border-image: linear-gradient(to right, transparent, var(--border)) 1;
+}
+
+.section-divider::after {
+  background: linear-gradient(to left, transparent, rgba(122,92,42,0.25));
+  border-image: linear-gradient(to left, transparent, var(--border)) 1;
+}
+
+.section-divider span {
+  padding: 0 20px;
+  font-size: 1.4rem;
+  color: var(--sand);
+  text-shadow: none;
+  flex-shrink: 0;
+  line-height: 1;
+}
 
 /* ── CONTROL ROWS ─────────────────────────────────────────── */
 .control-row {
@@ -89,9 +155,6 @@ header h1 {
   justify-content: center;
   width: 100%;
   max-width: 900px;
-}
-
-.random-row {
   background: var(--panel);
   border: 2px solid var(--border);
   box-shadow: 3px 3px 6px rgba(2,10,18,.5);
@@ -121,14 +184,32 @@ input[type="number"] {
   background: var(--shadow);
   color: var(--ink);
   border: 2px solid var(--border);
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,.4), 2px 2px 5px rgba(2,10,18,.5);
+  /* Inset shadow gives a carved-into-wood feel; top-left highlight echoes the button bevel */
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,0.55),
+    inset 1px 1px 0 rgba(255,220,120,0.05),
+    2px 2px 5px rgba(2,10,18,.5);
   outline: none;
   width: 150px;
   caret-color: var(--seafoam);
+  transition: border-color 160ms, box-shadow 160ms;
 }
 
 input[type="number"] { width: 72px; }
-input:focus { border-color: var(--sand); }
+
+input::placeholder {
+  color: var(--dim);
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+}
+
+input:focus {
+  border-color: var(--sand);
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,0.55),
+    inset 1px 1px 0 rgba(255,220,120,0.08),
+    2px 2px 5px rgba(2,10,18,.5);
+}
 
 select {
   font-family: 'Cinzel', serif;
@@ -137,9 +218,20 @@ select {
   background: var(--shadow);
   color: var(--ink);
   border: 2px solid var(--border);
-  box-shadow: 2px 2px 5px rgba(2,10,18,.5);
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,0.5),
+    inset 1px 1px 0 rgba(255,220,120,0.05),
+    2px 2px 5px rgba(2,10,18,.5);
   cursor: pointer;
   outline: none;
+  transition: border-color 160ms, box-shadow 160ms;
+}
+
+select:focus {
+  border-color: var(--sand);
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,0.5),
+    2px 2px 5px rgba(2,10,18,.5);
 }
 
 /* ── BUTTONS ──────────────────────────────────────────────── */
@@ -153,7 +245,7 @@ button {
   box-shadow:
     inset 1px 1px 0 rgba(255,220,120,.10),
     3px 3px 6px rgba(2,10,18,.55);
-  transition: transform 80ms, box-shadow 80ms;
+  transition: transform 80ms, box-shadow 80ms, background-color 120ms;
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -189,11 +281,11 @@ button:disabled {
 #btn-heap-clear:not(:disabled):hover { color: var(--ink); }
 
 #btn-heap-extract {
-  background: #082820; color: #50d0b0; border-color: var(--seafoam);
+  background: #082030; color: #60b8e0; border-color: var(--ocean);
 }
-#btn-heap-extract:not(:disabled):hover { background: #0c3428; }
+#btn-heap-extract:not(:disabled):hover { background: #0c2c40; }
 
-.toggle-btn         { background: #081c08; color: #68c868; border-color: var(--palm); }
+.toggle-btn         { background: #1c1404; color: #d0a840; border-color: var(--sand); }
 .toggle-btn.min     { background: #082030; color: #60b8e0; border-color: var(--ocean); }
 .toggle-btn:not(:disabled):hover { filter: brightness(1.2); }
 
@@ -226,8 +318,16 @@ button:disabled {
   scrollbar-color: var(--border) var(--panel);
 }
 
-#log-panel strong      { font-size: 0.85rem; color: var(--ocean); }
-#heap-log-panel strong { font-size: 0.85rem; color: var(--palm); }
+#log-panel strong,
+#heap-log-panel strong {
+  display: block;
+  font-size: 0.85rem;
+  padding-bottom: 6px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid var(--border);
+}
+#log-panel strong      { color: var(--ocean); }
+#heap-log-panel strong { color: var(--sand); }
 
 #log-list, #heap-log-list { list-style: none; margin-top: 8px; }
 
@@ -242,7 +342,9 @@ button:disabled {
 #log-list li:first-child,
 #heap-log-list li:first-child { color: var(--ink); }
 
-/* ── SVG CANVASES — seamless ocean, no hard box ──────────── */
+/* ── SVG CANVASES ─────────────────────────────────────────── */
+/* Background must stay exactly #8CB9D0 — removeImageBackground strips that precise colour
+   from Island_node.png so the transparent island edges blend seamlessly into the canvas. */
 #tree-svg, #heap-svg {
   width: 100%;
   max-width: 900px;
@@ -265,27 +367,30 @@ button:disabled {
   stroke-width: 3px;
 }
 
-.node .balance-label {
-  font-size: 11px;
-  fill: var(--stone);
-  stroke: none;
-  paint-order: normal;
-}
-
-/* drop-shadow follows the island's alpha channel — no box overlay */
+/* Node state is indicated by brightness/saturation shifts — no glow */
 .node.normal,   .heap-node.normal   { filter: none; }
-.node.inserted, .heap-node.inserted { filter: drop-shadow(0 0 10px rgba(40,  180, 40,  0.95)); }
-.node.rotated                        { filter: drop-shadow(0 0 10px rgba(210, 120, 20,  0.95)); }
-.node.selected, .heap-node.selected { filter: drop-shadow(0 0 10px rgba(220,  40, 40,  0.95)); }
-.heap-node.root    { filter: drop-shadow(0 0 10px rgba(220, 170,  0,  0.95)); }
-.heap-node.swapped { filter: drop-shadow(0 0 10px rgba(20,  180, 160, 0.95)); }
+.node.inserted, .heap-node.inserted { filter: brightness(1.18); }
+.node.rotated                        { filter: brightness(1.15) sepia(0.45); }
+.node.selected, .heap-node.selected { filter: brightness(1.35) saturate(1.2); }
+.heap-node.root                      { filter: brightness(1.25); }
+.heap-node.swapped                   { filter: brightness(1.2) saturate(1.25); }
 
 /* ── LINKS ────────────────────────────────────────────────── */
 .link, .heap-link {
   fill: none;
-  stroke: var(--dim);
-  stroke-width: 1.5px;
+  stroke: #9a7848;
+  stroke-width: 2px;
   stroke-dasharray: 5, 4;
+}
+
+/* ── EMPTY CANVAS HINT ────────────────────────────────────── */
+.empty-hint {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  fill: rgba(8,30,56,0.45);
+  letter-spacing: 4px;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* ── HEAP ARRAY DISPLAY ───────────────────────────────────── */
@@ -300,7 +405,7 @@ button:disabled {
   align-items: center;
 }
 
-.array-label { font-size: 0.8rem; color: var(--palm); white-space: nowrap; }
+.array-label { font-size: 0.8rem; color: var(--sand); white-space: nowrap; }
 
 #heap-array-values span {
   display: inline-block;
